@@ -1,3 +1,7 @@
+import { decryptSops } from "sops-age";
+import packageJson from '../package.json' ;
+// Access the entire JSON as a variable
+
 /**
  * Welcome to Cloudflare Workers! This is your first worker.
  *
@@ -13,6 +17,6 @@
 
 export default {
 	async fetch(request, env, ctx): Promise<Response> {
-		return new Response('Hello World!');
+		return new Response(JSON.stringify(packageJson));
 	},
 } satisfies ExportedHandler<Env>;
