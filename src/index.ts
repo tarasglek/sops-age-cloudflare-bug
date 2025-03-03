@@ -1,5 +1,5 @@
 import { decryptSops } from "sops-age";
-import packageJson from '../package.json' ;
+import packageJson from '../secrets.enc.json' ;
 // Access the entire JSON as a variable
 
 /**
@@ -17,6 +17,6 @@ import packageJson from '../package.json' ;
 
 export default {
 	async fetch(request, env, ctx): Promise<Response> {
-		return new Response(JSON.stringify(packageJson));
+		return new Response(JSON.stringify(decryptSops(packageJson)));
 	},
 } satisfies ExportedHandler<Env>;
