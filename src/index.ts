@@ -1,5 +1,5 @@
 import { decryptSops } from "sops-age";
-import packageJson from '../secrets.enc.json' ;
+import packageJson from "../secrets.enc.json";
 // Access the entire JSON as a variable
 
 /**
@@ -15,8 +15,15 @@ import packageJson from '../secrets.enc.json' ;
  * Learn more at https://developers.cloudflare.com/workers/
  */
 
+
 export default {
 	async fetch(request, env, ctx): Promise<Response> {
-		return new Response(JSON.stringify(decryptSops(packageJson)));
+		const SOPS_AGE_KEY = env.SOPS_AGE_KEY
+		return new Response(JSON.stringify(
+			{
+				SOPS_AGE_KEY,
+				decrypted: decryptSops(packageJson, {secretKey: SOPS_AGE_KEY}),
+			},
+		));
 	},
 } satisfies ExportedHandler<Env>;
